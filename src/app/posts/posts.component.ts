@@ -10,7 +10,7 @@ import {HttpClient} from '@angular/common/http';
 export class PostsComponent implements OnInit {
   private pageLoadingComplete = false;
 
-  displayedColumns = ['id', 'title', 'body', 'userId'];
+  displayedColumns = ['id', 'title', 'body', 'userId', 'action'];
   dataSource = null;
 
   constructor(private httpClient: HttpClient) {}
@@ -34,6 +34,14 @@ export class PostsComponent implements OnInit {
       }, error => {
         console.log('Failed to retrieve posts');
       });
+  }
+
+  editPost(postId: number) {
+    console.log(`Post editing with id ${postId} goes here`);
+  }
+
+  deletePost(postId: number) {
+    console.log(`Deleting post with id ${postId}`);
   }
 }
 

@@ -27,6 +27,15 @@
       <mat-cell *matCellDef="let element"> {{element.userId}} </mat-cell>
     </ng-container>
 
+    <!-- Edit Column -->
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button mat-button mat-raised-button color="primary" (click)="editPost(element.id)">Edit</button>
+        <button mat-button mat-raised-button color="warn" (click)="deletePost(element.id)">Delete</button>
+      </mat-cell>
+    </ng-container>
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
