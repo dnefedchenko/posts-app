@@ -1,48 +1,62 @@
 <mat-spinner *ngIf="!pageLoadingComplete"></mat-spinner>
 
-<div *ngIf="pageLoadingComplete">
-  <mat-table #table [dataSource]="dataSource">
+<div *ngIf="pageLoadingComplete && !postEdited() && !postCreated()">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Available Posts</mat-card-title>
+    </mat-card-header>
 
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef> Id. </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
-    </ng-container>
+    <mat-card-content>
+      <mat-table #table [dataSource]="dataSource">
 
-    <!-- Title Column -->
-    <ng-container matColumnDef="title">
-      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
-    </ng-container>
+        <!-- Id Column -->
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef> Id. </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+        </ng-container>
 
-    <!-- Body Column -->
-    <ng-container matColumnDef="body">
-      <mat-header-cell *matHeaderCellDef> Body </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.body}} </mat-cell>
-    </ng-container>
+        <!-- Title Column -->
+        <ng-container matColumnDef="title">
+          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
+        </ng-container>
 
-    <!-- Author Id Column -->
-    <ng-container matColumnDef="userId">
-      <mat-header-cell *matHeaderCellDef> Author Id </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.userId}} </mat-cell>
-    </ng-container>
+        <!-- Body Column -->
+        <ng-container matColumnDef="body">
+          <mat-header-cell *matHeaderCellDef> Body </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.body}} </mat-cell>
+        </ng-container>
 
-    <!-- Edit Column -->
-    <ng-container matColumnDef="action">
-      <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <button mat-button mat-raised-button color="primary" (click)="editPost(element.id)">Edit</button>
-        <button mat-button mat-raised-button color="warn" (click)="deletePost(element.id)">Delete</button>
-      </mat-cell>
-    </ng-container>
+        <!-- Author Id Column -->
+        <ng-container matColumnDef="userId">
+          <mat-header-cell *matHeaderCellDef> Author Id </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.userId}} </mat-cell>
+        </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
+        <!-- Edit Column -->
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button mat-button mat-raised-button color="primary" (click)="editPost(element)">Edit</button>
+            <button mat-button mat-raised-button color="warn" (click)="deletePost(element.id)">Delete</button>
+          </mat-cell>
+        </ng-container>
 
-  <mat-paginator #paginator *ngIf="pageLoadingComplete"
-                 [pageSize]="10"
-                 [pageSizeOptions]="[5, 10, 20]"
-                 [showFirstLastButtons]="true">
-  </mat-paginator>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+      <mat-paginator #paginator *ngIf="pageLoadingComplete"
+                     [pageSize]="10"
+                     [pageSizeOptions]="[5, 10, 20]"
+                     [showFirstLastButtons]="true">
+      </mat-paginator>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-button mat-raised-button color="primary" (click)="createPost()">Create Post</button>
+    </mat-card-actions>
+  </mat-card>
 </div>
+
+<app-post-form [post]="post" (back)="showList()" *ngIf="postEdited() || postCreated()"></app-post-form>

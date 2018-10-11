@@ -12,6 +12,7 @@ export class PostsComponent implements OnInit {
 
   displayedColumns = ['id', 'title', 'body', 'userId', 'action'];
   dataSource = null;
+  post: Post = null;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -36,8 +37,12 @@ export class PostsComponent implements OnInit {
       });
   }
 
-  editPost(postId: number) {
-    console.log(`Post editing with id ${postId} goes here`);
+  createPost() {
+    this.post = {id: null, title: null, body: null, userId: null};
+  }
+
+  editPost(post: Post) {
+    this.post = post;
   }
 
   deletePost(postId: number) {
@@ -47,6 +52,18 @@ export class PostsComponent implements OnInit {
           this.dataSource.data = this.dataSource.data.filter(post => post.id !== postId);
         },
         (error: any) => {console.log(`Failed to remove post with id ${postId}`)});
+  }
+
+  postEdited(): boolean {
+    return this.post !== null && this.post.id !== null;
+  }
+
+  postCreated() {
+    return this.post != null;
+  }
+
+  showList(): void {
+    this.post = null;
   }
 }
 

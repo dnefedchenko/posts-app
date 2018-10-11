@@ -1,0 +1,8 @@
+.post-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-form > * {
+  width: 100%;
+}
