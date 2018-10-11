@@ -41,7 +41,12 @@ export class PostsComponent implements OnInit {
   }
 
   deletePost(postId: number) {
-    console.log(`Deleting post with id ${postId}`);
+    this.httpClient.delete(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+      .subscribe(
+        (response: any) => {
+          this.dataSource.data = this.dataSource.data.filter(post => post.id !== postId);
+        },
+        (error: any) => {console.log(`Failed to remove post with id ${postId}`)});
   }
 }
 
