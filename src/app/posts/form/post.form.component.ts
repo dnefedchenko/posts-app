@@ -11,6 +11,8 @@ import {Post} from '../posts.component';
 export class PostFormComponent implements OnInit {
   @Input() private post: Post;
   @Output() back: EventEmitter<any> = new EventEmitter();
+  @Output() onCreate: EventEmitter<any> = new EventEmitter();
+  @Output() onUpdate: EventEmitter<any> = new EventEmitter();
 
   postForm: FormGroup;
 
@@ -26,7 +28,34 @@ export class PostFormComponent implements OnInit {
   }
 
   save(): void {
-    console.log(`${this.postForm.value}`);
+    const post = this.postForm.value;
+    if (post.id) {
+      this.update(post);
+    } else {
+      this.create(post);
+    }
+  }
+
+  private create(post: Post) {
+    this.httpClient.post(`https://jsonplaceholder.typicode.com/posts`, post)
+      .subscribe(
+        (response: any) => {
+          this.onCreate.emit(response);
+        },
+        (error: any) => {
+          console.log(`Failed to create new post ${post}`);
+        });
+  }
+
+  private update(post: Post) {
+    this.httpClient.put(`https://jsonplaceholder.typicode.com/posts/${post.id}`, post)
+      .subscribe(
+        (response: any) => {
+          this.onUpdate.emit(response);
+        },
+        (error: any) => {
+          console.log(`Failed to update new post ${post}`);
+        });
   }
 
   cancel(): void {

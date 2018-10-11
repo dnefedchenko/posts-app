@@ -51,7 +51,9 @@ export class PostsComponent implements OnInit {
         (response: any) => {
           this.dataSource.data = this.dataSource.data.filter(post => post.id !== postId);
         },
-        (error: any) => {console.log(`Failed to remove post with id ${postId}`)});
+        (error: any) => {
+          console.log(`Failed to remove post with id ${postId}`);
+        });
   }
 
   postEdited(): boolean {
@@ -63,6 +65,17 @@ export class PostsComponent implements OnInit {
   }
 
   showList(): void {
+    this.post = null;
+  }
+
+  onUpdate(post: Post): void {
+    this.dataSource.data = this.dataSource.data.filter(p => p.id !== post.id);
+    this.dataSource.data.unshift(post);
+    this.post = null;
+  }
+
+  onCreate(post: Post): void {
+    this.dataSource.data.unshift(post);
     this.post = null;
   }
 }

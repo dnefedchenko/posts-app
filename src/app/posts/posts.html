@@ -59,4 +59,7 @@
   </mat-card>
 </div>
 
-<app-post-form [post]="post" (back)="showList()" *ngIf="postEdited() || postCreated()"></app-post-form>
+<app-post-form [post]="post" (back)="showList()"
+               (onUpdate)="onUpdate($event)"
+               (onCreate)="onCreate($event)"
+               *ngIf="postEdited() || postCreated()"></app-post-form>
